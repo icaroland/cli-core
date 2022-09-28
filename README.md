@@ -1,2 +1,2 @@
 # Coming soon
-Icaro Command Line Interface
+Icaro packet manager command line interface
