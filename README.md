@@ -1,2 +1,1 @@
-# Coming soon
-Icaro package manager
+# Icaro package manager
