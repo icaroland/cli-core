@@ -9,14 +9,27 @@ import java.nio.file.Paths
 
 @CommandLine.Command(name = "new-here", description = ["the current directory will become an Icaro project"])
 class NewHere : Runnable {
+    override fun run() {
+        try {
+            createDependenciesFile("deps.json")
+            createSourceDir("src", "main.ic")
+            createBinariesDir(".bin", "classes")
+        } catch (e: Throwable) {
+            return
+        }
+    }
 
     private fun createDependenciesFile(path: String) {
-        File(path).delete()
-        
+        println("insert cli version: ")
+        val cliVersion = readLine()!!
+
+        println("\ninsert lang version: ")
+        val langVersion = readLine()!!
+
         val depsInJson = GsonBuilder().setPrettyPrinting().create().toJson(
             mapOf(
-                "langVersion" to System.getenv("ICARO_LANG_VERSION"),
-                "cliVersion" to System.getenv("ICARO_CLI_VERSION")
+                "cliVersion" to cliVersion,
+                "langVersion" to langVersion
             )
         )
 
@@ -24,24 +37,12 @@ class NewHere : Runnable {
     }
 
     private fun createSourceDir(pathToSrcDir: String, pathToMainFile: String) {
-        File(pathToSrcDir).deleteRecursively()
-        
         Files.createDirectory(Path.of(pathToSrcDir))
-        File("$pathToSrcDir${File.separator}$pathToMainFile").writeText("")
+        File("$pathToSrcDir/$pathToMainFile").writeText("")
     }
 
     private fun createBinariesDir(pathToBinDir: String, pathToClassesDir: String) {
-        File(pathToBinDir).deleteRecursively()
-
         Files.createDirectory(Path.of(pathToBinDir))
-        Files.createDirectory(Path.of("$pathToBinDir${File.separator}$pathToClassesDir"))
-    }
-
-    override fun run() {
-        val currentDir = Paths.get("").toAbsolutePath().toString()
-
-        createDependenciesFile("$currentDir${File.separator}dependencies.json")
-        createSourceDir("$currentDir${File.separator}src", "main.ic")
-        createBinariesDir("$currentDir${File.separator}.bin", "classes")
+        Files.createDirectory(Path.of("$pathToBinDir/$pathToClassesDir"))
     }
 }
