@@ -1,11 +1,12 @@
 package commands
 
+import ICARO_HOME
 import com.google.gson.GsonBuilder
+import download
 import picocli.CommandLine
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 
 @CommandLine.Command(name = "new-here", description = ["the current directory will become an Icaro project"])
 class NewHere : Runnable {
@@ -20,12 +21,18 @@ class NewHere : Runnable {
     }
 
     private fun createDependenciesFile(path: String) {
-        println("insert cli version: ")
+        print("insert cli version: ")
         val cliVersion = readLine()!!
 
-        println("\ninsert lang version: ")
+        print("insert lang version: ")
         val langVersion = readLine()!!
 
+        if (!File("$ICARO_HOME/cli/core/$cliVersion.jar").isFile)
+            download("cli-core", cliVersion, "cli/core")
+
+        if (!File("$ICARO_HOME/lang/$langVersion.jar").isFile)
+            download("lang-implementation", langVersion, "lang")
+        
         val depsInJson = GsonBuilder().setPrettyPrinting().create().toJson(
             mapOf(
                 "cliVersion" to cliVersion,

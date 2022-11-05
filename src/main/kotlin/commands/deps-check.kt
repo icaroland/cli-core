@@ -2,10 +2,10 @@ package commands
 
 import ICARO_HOME
 import com.google.gson.Gson
+import download
 import org.apache.commons.io.FileUtils
 import picocli.CommandLine
 import java.io.File
-import java.net.URL
 
 @CommandLine.Command(name = "deps-check", description = ["check for every dependency to be installed and correct"])
 class DepsCheck : Runnable {
@@ -30,7 +30,7 @@ class DepsCheck : Runnable {
                 println("some dependencies aren't installed! Do you want to install them? (y/n)")
 
                 if (readLine()!! == "y")
-                    toDownload.forEach { download(it) }
+                    toDownload.forEach { download(it[0], it[1], it[2]) }
             }
         } catch (e: Throwable) {
             return
@@ -41,13 +41,5 @@ class DepsCheck : Runnable {
         val dependencies = Gson().fromJson(File("deps.json").readText(), Map::class.java)
 
         return listOf(dependencies["cliVersion"], dependencies["langVersion"]).map { toString() }
-    }
-
-    private fun download(downloadInfo: List<String>) {
-        val (githubRepoName, tag, targetFolder) = downloadInfo
-
-        val url = "https://github.com/icaroland/$githubRepoName/releases/download/$tag/$tag.jar"
-
-        FileUtils.copyURLToFile(URL(url), File("$ICARO_HOME/$targetFolder/$tag.jar"))
     }
 }
