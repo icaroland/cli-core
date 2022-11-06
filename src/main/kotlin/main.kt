@@ -1,4 +1,3 @@
-import commands.DepsCheck
 import commands.NewHere
 import picocli.CommandLine
 import picocli.CommandLine.*
@@ -6,7 +5,7 @@ import kotlin.system.exitProcess
 
 @Command(
     name = "icaro",
-    subcommands = [NewHere::class/*, DepsCheck::class*/, HelpCommand::class],
+    subcommands = [NewHere::class, HelpCommand::class],
     description = ["The Icaro programming language CLI"]
 )
 class Icaro

@@ -1,8 +1,6 @@
 package commands
 
-import ICARO_HOME
 import com.google.gson.GsonBuilder
-import download
 import picocli.CommandLine
 import java.io.File
 import java.nio.file.Files
@@ -16,7 +14,7 @@ class NewHere : Runnable {
             createSourceDir("src", "main.ic")
             createBinariesDir(".bin", "classes")
         } catch (e: Throwable) {
-            return
+            e.printStackTrace()
         }
     }
 
@@ -26,12 +24,6 @@ class NewHere : Runnable {
 
         print("insert lang version: ")
         val langVersion = readLine()!!
-
-        if (!File("$ICARO_HOME/cli/core/$cliVersion.jar").isFile)
-            download("cli-core", cliVersion, "cli/core")
-
-        if (!File("$ICARO_HOME/lang/$langVersion.jar").isFile)
-            download("lang-implementation", langVersion, "lang")
         
         val depsInJson = GsonBuilder().setPrettyPrinting().create().toJson(
             mapOf(
