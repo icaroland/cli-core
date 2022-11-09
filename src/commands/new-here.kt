@@ -1,5 +1,12 @@
 package commands
 
+import BINARY_DIR_NAME
+import CLASSES_DIR_NAME
+import CLI_VERSION_JSON_ATTRIBUTE_NAME
+import DEPS_FILE_NAME
+import LANG_VERSION_JSON_ATTRIBUTE_NAME
+import MAIN_SOURCE_FILE_NAME
+import SOURCE_DIR_NAME
 import com.google.gson.GsonBuilder
 import picocli.CommandLine
 import java.io.File
@@ -10,9 +17,9 @@ import java.nio.file.Path
 class NewHere : Runnable {
     override fun run() {
         try {
-            createDependenciesFile("deps.json")
-            createSourceDir("src", "main.ic")
-            createBinariesDir(".bin", "classes")
+            createDependenciesFile(DEPS_FILE_NAME)
+            createSourceDir(SOURCE_DIR_NAME, "$MAIN_SOURCE_FILE_NAME.ic")
+            createBinariesDir(".$BINARY_DIR_NAME", CLASSES_DIR_NAME)
         } catch (e: Throwable) {
             e.printStackTrace()
         }
@@ -24,11 +31,11 @@ class NewHere : Runnable {
 
         print("insert lang version: ")
         val langVersion = readLine()!!
-        
+
         val depsInJson = GsonBuilder().setPrettyPrinting().create().toJson(
             mapOf(
-                "cliVersion" to cliVersion,
-                "langVersion" to langVersion
+                CLI_VERSION_JSON_ATTRIBUTE_NAME to cliVersion,
+                LANG_VERSION_JSON_ATTRIBUTE_NAME to langVersion
             )
         )
 
