@@ -17,15 +17,18 @@ import java.nio.file.Path
 class NewHere : Runnable {
     override fun run() {
         try {
-            createDependenciesFile("$DEPS_FILE_NAME.json")
-            createSourceDir(SOURCE_DIR_NAME, "$MAIN_SOURCE_FILE_NAME.ic")
-            createBinariesDir(".$BINARY_DIR_NAME", CLASSES_DIR_NAME)
+            createDependenciesFile()
+
+            File(SOURCE_DIR_NAME).mkdir()
+            File("$SOURCE_DIR_NAME/$MAIN_SOURCE_FILE_NAME.ic").writeText("")
+            
+            File(".$BINARY_DIR_NAME/$CLASSES_DIR_NAME").mkdirs()
         } catch (e: Throwable) {
             e.printStackTrace()
         }
     }
 
-    private fun createDependenciesFile(path: String) {
+    private fun createDependenciesFile() {
         print("insert cli version: ")
         val cliVersion = readLine()!!
 
@@ -39,16 +42,6 @@ class NewHere : Runnable {
             )
         )
 
-        File(path).writeText(depsInJson)
-    }
-
-    private fun createSourceDir(pathToSrcDir: String, pathToMainFile: String) {
-        Files.createDirectory(Path.of(pathToSrcDir))
-        File("$pathToSrcDir/$pathToMainFile").writeText("")
-    }
-
-    private fun createBinariesDir(pathToBinDir: String, pathToClassesDir: String) {
-        Files.createDirectory(Path.of(pathToBinDir))
-        Files.createDirectory(Path.of("$pathToBinDir/$pathToClassesDir"))
+        File("$DEPS_FILE_NAME.json").writeText(depsInJson)
     }
 }
