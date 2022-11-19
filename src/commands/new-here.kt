@@ -15,8 +15,6 @@ import java.io.File
 class NewHere : Runnable {
     override fun run() {
         try {
-            readLine()!!
-
             print("insert cli version: ")
             val cliVersion = readLine()!!
 
