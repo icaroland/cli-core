@@ -15,6 +15,8 @@ import java.io.File
 class NewHere : Runnable {
     override fun run() {
         try {
+            readLine()!!
+
             print("insert cli version: ")
             val cliVersion = readLine()!!
 
@@ -22,25 +24,18 @@ class NewHere : Runnable {
             val langVersion = readLine()!!
 
             createDependenciesFile(cliVersion, langVersion)
-            createSrcAndBinDirs(SOURCE_DIR_NAME, BINARY_DIR_NAME)
+            createSrcAndBinDirs()
         } catch (e: Throwable) {
             e.printStackTrace()
         }
     }
 }
 
-/*
-doesn't make sense to pass constants but
-1. constants are useful
-2. in this case, we make this function parametrized, or we couldn't test it 
-   because creating a src directory in the root path of this folder conflict with this 
-   project src file (DX with docker is bad because everytime we need to wait for maven to build)
- */
-fun createSrcAndBinDirs(sourceDirName: String, binaryDirName: String) {
-    File(sourceDirName).mkdir()
-    File("$sourceDirName/$MAIN_SOURCE_FILE").writeText("")
+fun createSrcAndBinDirs() {
+    File(SOURCE_DIR_NAME).mkdir()
+    File("$SOURCE_DIR_NAME/$MAIN_SOURCE_FILE").writeText("")
 
-    File("$binaryDirName/$CLASSES_DIR_NAME").mkdirs()
+    File("$BINARY_DIR_NAME/$CLASSES_DIR_NAME").mkdirs()
 }
 
 fun createDependenciesFile(cliVersion: String, langVersion: String) {
