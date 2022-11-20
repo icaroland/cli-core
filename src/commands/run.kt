@@ -7,7 +7,6 @@ import DepsFileNotFound
 import LANG_DIR_PATH
 import LANG_VERSION_DEPS_ATTRIBUTE_NAME
 import LangVersionNotFound
-import SOURCE_DIR_NAME
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import picocli.CommandLine
@@ -19,8 +18,7 @@ class Run : Runnable {
     override fun run() {
         val path = "$LANG_DIR_PATH/${langVersionToUse()}.jar"
 
-        ProcessBuilder(listOf("java", "-jar", path, SOURCE_DIR_NAME, "$BINARY_DIR_NAME/$CLASSES_DIR_NAME")).inheritIO()
-            .start().waitFor()
+        ProcessBuilder(listOf("java", "-jar", path)).inheritIO().start().waitFor()
 
         executeClassFile()
     }
@@ -34,8 +32,7 @@ fun langVersionToUse(): String {
 
         val langVersion = dependencies[LANG_VERSION_DEPS_ATTRIBUTE_NAME].toString()
 
-        if (!File("$LANG_DIR_PATH/${langVersionToUse()}.jar").exists())
-            throw LangVersionNotFound("I can't find installed the lang version you specified")
+        if (!File("$LANG_DIR_PATH/${langVersionToUse()}.jar").exists()) throw LangVersionNotFound("I can't find installed the lang version you specified")
 
         return langVersion
     } catch (e: Throwable) {
