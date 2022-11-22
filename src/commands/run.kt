@@ -16,9 +16,7 @@ import java.util.*
 @CommandLine.Command(name = "run", description = ["build and execute the code inside src"])
 class Run : Runnable {
     override fun run() {
-        val path = "$LANG_DIR_PATH/${langVersionToUse()}.jar"
-
-        ProcessBuilder(listOf("java", "-jar", path)).inheritIO().start().waitFor()
+        ProcessBuilder(listOf("java", "-jar", "$LANG_DIR_PATH/${langVersionToUse()}.jar")).inheritIO().start().waitFor()
 
         executeClassFile()
     }
@@ -41,11 +39,9 @@ fun langVersionToUse(): String {
 }
 
 fun executeClassFile() {
-    val className = "Main"
+    val bytecode = File("$BINARY_DIR_NAME/$CLASSES_DIR_NAME/Main.class").readBytes()
 
-    val bytecode = File("$BINARY_DIR_NAME/$CLASSES_DIR_NAME/$className.class").readBytes()
-
-    IcaroClassLoader().defineClass(className, bytecode).getMethod("main", Array<String>::class.java)
+    IcaroClassLoader().defineClass("IcaroMain", bytecode).getMethod("main", Array<String>::class.java)
         .invoke(null, arrayOf<String>())
 }
 
