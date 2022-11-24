@@ -14,18 +14,14 @@ import java.io.File
 @CommandLine.Command(name = "new-here", description = ["the current directory will become an Icaro project"])
 class NewHere : Runnable {
     override fun run() {
-        try {
-            print("insert cli version: ")
-            val cliVersion = readLine()!!
+        print("insert cli version: ")
+        val cliVersion = readLine()!!
 
-            print("insert lang version: ")
-            val langVersion = readLine()!!
+        print("insert lang version: ")
+        val langVersion = readLine()!!
 
-            createDependenciesFile(cliVersion, langVersion)
-            createSrcAndBinDirs()
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
+        createDependenciesFile(cliVersion, langVersion)
+        createSrcAndBinDirs()
     }
 }
 

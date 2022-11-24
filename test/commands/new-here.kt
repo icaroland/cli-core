@@ -1,5 +1,6 @@
 package commands
 
+import AutoRemover
 import BINARY_DIR_NAME
 import CLASSES_DIR_NAME
 import CLI_VERSION_DEPS_ATTRIBUTE_NAME
@@ -8,19 +9,10 @@ import LANG_VERSION_DEPS_ATTRIBUTE_NAME
 import MAIN_SOURCE_FILE
 import SOURCE_DIR_NAME
 import com.google.gson.Gson
-import org.apache.commons.io.FileUtils
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-
-open class AutoRemover {
-    @AfterEach
-    fun deleteGeneratedContent() {
-        FileUtils.cleanDirectory(File("."))
-    }
-}
 
 class NewHereTest : AutoRemover() {
     @Test

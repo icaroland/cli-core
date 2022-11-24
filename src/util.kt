@@ -5,3 +5,8 @@ const val SOURCE_DIR_NAME = "src"
 const val MAIN_SOURCE_FILE = "main.ic"
 const val BINARY_DIR_NAME = ".bin"
 const val CLASSES_DIR_NAME = "classes"
+val LANG_DIR_PATH = "${System.getenv("ICARO_HOME")}/lang"
+
+class DepsFileNotFound(msg: String) : Throwable(msg)
+class LangVersionNotFound(msg: String) : Throwable(msg)
+
