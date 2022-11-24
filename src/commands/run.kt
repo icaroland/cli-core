@@ -25,17 +25,20 @@ class Run : Runnable {
 fun langVersionToUse(): String {
     if (!File(DEPS_FILE).isFile) throw DepsFileNotFound("In order to run this command you should be inside an icaro project")
 
+    var langVersion = ""
+
     try {
         val dependencies = Gson().fromJson(File(DEPS_FILE).readText(), Map::class.java)
 
-        val langVersion = dependencies[LANG_VERSION_DEPS_ATTRIBUTE_NAME].toString()
-
-        if (!File("$LANG_DIR_PATH/${langVersionToUse()}.jar").exists()) throw LangVersionNotFound("I can't find installed the lang version you specified")
-
-        return langVersion
+        langVersion = dependencies[LANG_VERSION_DEPS_ATTRIBUTE_NAME].toString()
     } catch (e: Throwable) {
         throw JsonSyntaxException("deps.json file doesn't contain valid JSON!")
     }
+    
+    if (!File("$LANG_DIR_PATH/$langVersion.jar").exists())
+        throw LangVersionNotFound("I can't find installed the lang version you specified")
+
+    return langVersion
 }
 
 fun executeClassFile() {
