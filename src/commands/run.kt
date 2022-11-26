@@ -34,7 +34,7 @@ fun langVersionToUse(): String {
     } catch (e: Throwable) {
         throw JsonSyntaxException("deps.json file doesn't contain valid JSON!")
     }
-    
+
     if (!File("$LANG_DIR_PATH/$langVersion.jar").exists())
         throw LangVersionNotFound("I can't find installed the lang version you specified")
 
@@ -44,7 +44,7 @@ fun langVersionToUse(): String {
 fun executeClassFile() {
     val bytecode = File("$BINARY_DIR_NAME/$CLASSES_DIR_NAME/Main.class").readBytes()
 
-    IcaroClassLoader().defineClass("IcaroMain", bytecode).getMethod("main", Array<String>::class.java)
+    IcaroClassLoader().defineClass("Main", bytecode).getMethod("main", Array<String>::class.java)
         .invoke(null, arrayOf<String>())
 }
 
